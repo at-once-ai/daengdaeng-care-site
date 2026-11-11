@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- 확인값이 담긴 이 주소가 다른 사이트로 전달되지 않게 한다. 외부 스크립트·이미지·글꼴을 쓰지 않는다. -->
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-hoWNhJlnu3EiYXryLfOHiAFU/xhjW1YLxsb+Jg1t+Yk='; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>앱으로 돌아가기</title>
+<style>
+  body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    font-family: system-ui, -apple-system, sans-serif; background: #F8F8F5; color: #252C29; }
+  main { max-width: 420px; padding: 24px; text-align: center; }
+  p { line-height: 1.6; color: #626C65; }
+  a.go { display: inline-block; margin-top: 8px; padding: 14px 22px; border-radius: 12px; background: #6D3BFF;
+    color: #fff; text-decoration: none; font-weight: 600; }
+  a.go[hidden] { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1 id="title">로그인을 마무리하고 있어요</h1>
+  <p id="text">잠시 뒤 daengdaeng-care 앱으로 돌아갑니다. 앱이 열리지 않으면 아래 버튼을 눌러 주세요.</p>
+  <a id="go" class="go" href="#" hidden>앱으로 돌아가기</a>
+</main>
+<script>
+// daengdaeng-care 로그인 복귀 페이지(출시용 https 주소, 2026-11-11). 개발용 복귀 서버
+// (apps/mobile/scripts/auth-callback-dev-server.mjs)와 같은 규칙: 확인값 형식을 검사한 뒤 앱 주소로만 넘긴다.
+// Android App Link가 동작하면 이 페이지를 거치지 않고 앱이 바로 열린다.
+(function () {
+  var APP = 'daengdaeng-care-dev://auth/callback';
+  var params = new URLSearchParams(location.search);
+  var verifier = params.getAll('neon_auth_session_verifier');
+  var error = params.get('error');
+  var forward = new URLSearchParams();
+  if (verifier.length === 1 && /^[A-Za-z0-9._~-]{16,1024}$/.test(verifier[0])) forward.set('neon_auth_session_verifier', verifier[0]);
+  else if (error && /^[a-z_]{1,64}$/.test(error)) forward.set('error', error);
+  else forward.set('error', 'invalid_callback');
+  var target = APP + '?' + forward.toString();
+  // 뒤로 가기·방문 기록에 확인값이 남지 않게 주소창의 검색 부분을 지운다.
+  try { history.replaceState(null, '', location.pathname); } catch (e) { /* 무시 */ }
+  var go = document.getElementById('go');
+  go.href = target;
+  go.hidden = false;
+  location.replace(target);
+})();
+</script>
+</body>
+</html>
