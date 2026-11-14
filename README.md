@@ -8,6 +8,7 @@
 |---|---|
 | `/` | 서비스 소개(준비 중) |
 | `/privacy/` | 개인정보처리방침(준비 중, 출시 전 검토한 본문을 게시) |
+| `/account-deletion/` | 계정 삭제(탈퇴) 요청 방법·지워지는 것·남는 것·30일 안내(구글 플레이 계정 삭제 요구). 앱 없이 요청하는 메일 주소 포함 |
 | `/auth/callback` (`auth/callback.html`) | 로그인 복귀 페이지(끝에 / 없이 바로 제공돼야 앱·App Link 경로와 맞는다). Neon Auth가 붙여 준 확인값의 형식을 검사한 뒤 앱 주소로만 넘긴다 |
 | `/.well-known/assetlinks.json` | Android App Link 설정. 지금은 개발 빌드(`com.atonce.daengdaengcare.dev`, 공개된 React Native 기본 개발용 서명)만 등록. 출시 때 출시용 패키지·서명 지문으로 바꾼다 |
 | `.nojekyll` | GitHub Pages가 점(.)으로 시작하는 폴더(`.well-known`)를 무시하지 않게 한다 |
