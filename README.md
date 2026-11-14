@@ -9,7 +9,7 @@
 | `/` | 서비스 소개(준비 중) |
 | `/privacy/` | 개인정보처리방침(준비 중, 출시 전 검토한 본문을 게시) |
 | `/auth/callback` (`auth/callback.html`) | 로그인 복귀 페이지(끝에 / 없이 바로 제공돼야 앱·App Link 경로와 맞는다). Neon Auth가 붙여 준 확인값의 형식을 검사한 뒤 앱 주소로만 넘긴다 |
-| `/.well-known/assetlinks.json` | Android App Link 설정. 지금은 개발 빌드(`com.atonce.daengdaengcare.dev`, 공개된 React Native 기본 개발용 서명)만 등록. 출시 때 출시용 패키지·서명 지문으로 바꾼다 |
+| `/.well-known/assetlinks.json` | Android App Link 설정. 개발 빌드(`com.atonce.daengdaengcare.dev`, 공개된 React Native 기본 개발용 서명)와 정식 앱(`com.atonce.daengdaengcare`, 업로드 키 지문, 2026-11-14). 구글 플레이 앱 서명 키 지문은 Play Console 등록 뒤 추가 |
 | `.nojekyll` | GitHub Pages가 점(.)으로 시작하는 폴더(`.well-known`)를 무시하지 않게 한다 |
 | `CNAME` | 자체 도메인(`daengdaeng.at-once.kr`) |
 
