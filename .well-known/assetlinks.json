@@ -8,5 +8,15 @@
         "FA:C6:17:45:DC:09:03:78:6F:B9:ED:E6:2A:96:2B:39:9F:73:48:F0:BB:6F:89:9B:83:32:66:75:91:03:3B:9C"
       ]
     }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.atonce.daengdaengcare",
+      "sha256_cert_fingerprints": [
+        "B8:1D:44:FC:88:16:C2:72:C5:90:C7:47:B1:D7:04:3E:ED:B0:D8:F3:CD:7F:AF:2E:33:7E:35:8E:35:97:F7:CE"
+      ]
+    }
   }
 ]
