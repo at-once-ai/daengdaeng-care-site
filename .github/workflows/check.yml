@@ -1,0 +1,30 @@
+# 자동 검사: 공개 페이지에 채우지 않은 빈칸 표시({{...}})가 남아 있으면 실패한다.
+# 이 저장소는 main이 곧 공개 사이트(GitHub Pages)라, 덜 채운 페이지가 공개되지 않게 PR에서 먼저 막는다(2026-11-14 사용자 승인).
+# 비밀값·외부 전송 없음. 외부 Action은 본 저장소와 같은 공식 릴리스 커밋 해시로 고정했다.
+name: 자동 검사
+
+on:
+  push:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  placeholders:
+    name: 빈칸 표시 검사
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: 공개 파일에 {{ }} 빈칸이 없는지 확인
+        run: |
+          if grep -rnE '\{\{[^}]*\}\}' --include='*.html' --include='*.json' --include='*.txt' --exclude-dir=.git --exclude-dir=.github .; then
+            echo "::error::채우지 않은 빈칸 표시가 있습니다. 위 줄을 채운 뒤 다시 올려 주세요."
+            exit 1
+          fi
+          echo "빈칸 표시 없음"
