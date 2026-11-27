@@ -13,8 +13,7 @@
 | `/.well-known/assetlinks.json` | Android App Link 설정. 개발 빌드(`com.atonce.daengdaengcare.dev`, 공개된 React Native 기본 개발용 서명)와 정식 앱(`com.atonce.daengdaengcare`, 업로드 키 지문, 2026-11-14). 구글 플레이 앱 서명 키 지문은 Play Console 등록 뒤 추가 |
 | `.nojekyll` | GitHub Pages가 점(.)으로 시작하는 폴더(`.well-known`)를 무시하지 않게 한다 |
 | `CNAME` | 자체 도메인(`daengdaeng.at-once.kr`) |
-| `/data/hospitals/v1/` | 전국 영업 중 동물병원 목록(시도별 JSON + `index.json`). 행정안전부 동물병원 조회서비스(공공데이터, 이용 허락 제한 없음)를 매주 월요일 자동 갱신(`.github/workflows/hospitals.yml`). 인허가 기준이라 "지금 진료 중"을 뜻하지 않음 |
-| `tools/` | 목록 만드는 스크립트 사본(원본은 `daengdaeng-care/backend/scripts/hospitals-build.mjs`)과 고정 패키지(`proj4` 2.22.0). 키는 저장소 Secrets `KOREACONNECT_API_KEY`에만 둔다 |
+| `/data/hospitals/v1/` | 전국 영업 중 동물병원 목록(시도별 JSON + `index.json`). 행정안전부 동물병원 조회서비스(공공데이터, 이용 허락 제한 없음). 인허가 기준이라 "지금 진료 중"을 뜻하지 않음. 갱신은 비공개 앱 저장소의 `npm run hospitals:publish`를 국내 PC에서 실행해 PR로 올린다(월 1회 정도). GitHub Actions는 플랫폼 웹 방화벽이 해외 서버를 막아 쓰지 않는다(2026-11-27 확인) |
 
 앱 코드와 결정 기록은 비공개 저장소 `daengdaeng-care`에 있습니다(PRD DEC-03, 2026-11-11 자체 도메인 결정).
 

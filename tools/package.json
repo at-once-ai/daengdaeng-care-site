@@ -1,9 +1,0 @@
-{
-  "name": "daengdaeng-care-site-tools",
-  "private": true,
-  "type": "module",
-  "description": "동물병원 목록 파일 만들기(자동 갱신용). 원본 스크립트는 daengdaeng-care/backend/scripts/hospitals-build.mjs",
-  "dependencies": {
-    "proj4": "2.22.0"
-  }
-}
