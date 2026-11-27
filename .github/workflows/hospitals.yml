@@ -1,0 +1,53 @@
+# 동물병원 목록 자동 갱신(PRD FR-12, 2026-11-27 사용자 승인 A안).
+# 매주 월요일 03:30(한국 시간)에 행정안전부 동물병원 조회서비스를 받아 data/hospitals/v1/의 시도별 목록을 새로 만든다.
+# 내용이 바뀐 시도가 있을 때만 main에 커밋한다(같으면 커밋 없음). 앱은 https://daengdaeng.at-once.kr/data/hospitals/v1/ 을 읽는다.
+# 비밀값: 저장소 Secrets의 KOREACONNECT_API_KEY(디지털융합플랫폼 사용자 인증키). 로그·파일에 남기지 않는다.
+# 외부 Action은 자동 검사(check.yml)와 같은 공식 릴리스 커밋 해시로 고정했다. Node는 러너에 들어 있는 것을 쓴다.
+name: 동물병원 목록 갱신
+
+on:
+  schedule:
+    - cron: '30 18 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hospitals-data
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: 목록 받아 만들기
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: 키가 있는지 확인
+        env:
+          KOREACONNECT_API_KEY: ${{ secrets.KOREACONNECT_API_KEY }}
+        run: |
+          if [ -z "$KOREACONNECT_API_KEY" ]; then
+            echo "::error::저장소 Secrets에 KOREACONNECT_API_KEY가 없습니다. Settings › Secrets and variables › Actions에서 넣어 주세요."
+            exit 1
+          fi
+          node --version
+      - name: 도구 설치(proj4 고정판)
+        working-directory: tools
+        run: npm ci --ignore-scripts --no-fund --no-audit
+      - name: 목록 만들기
+        env:
+          KOREACONNECT_API_KEY: ${{ secrets.KOREACONNECT_API_KEY }}
+        run: node tools/hospitals-build.mjs data/hospitals/v1
+      - name: 바뀐 내용이 있으면 커밋
+        run: |
+          if [ -z "$(git status --porcelain data/hospitals)" ]; then
+            echo "바뀐 시도 없음 — 커밋하지 않음"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/hospitals
+          git commit -m "data: 동물병원 목록 갱신($(TZ=Asia/Seoul date +%Y-%m-%d))"
+          git push
